@@ -3,8 +3,14 @@
  */
 package com.oracle.jsc.polyglot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class App {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     public String getGreeting() {
+        log.debug("getGreeting()");
         return "Hello World!";
     }
 
