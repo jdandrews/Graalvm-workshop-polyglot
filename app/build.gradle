@@ -1,0 +1,40 @@
+plugins {
+    id 'application'
+    id 'org.graalvm.buildtools.native' // see gradle.properties for version.
+}
+
+dependencies {
+    testImplementation 'org.testng:testng:7.4.0'
+}
+
+application {
+    mainClass = 'com.oracle.jsc.polyglot.App'
+}
+
+tasks.named('test') {
+    useTestNG()
+}
+
+/*
+graalvmNative {
+    	binaries {
+		main {
+			// Main options
+			debug = true // Determines if debug info should be generated, defaults to false
+			verbose = true // Add verbose output, defaults to false
+			fallback = false // Sets the fallback mode of native-image, defaults to false
+			buildArgs.add("--initialize-at-build-time=com.sun.xml.bind.v2.model.impl.Utils")
+			buildArgs.add('--initialize-at-build-time=sun.instrument.InstrumentationImpl')
+			buildArgs.add('--initialize-at-run-time=com.sun.xml')
+			//buildArgs.add('--initialize-at-build-time=com.sun.xml.ws.policy.privateutil.PolicyLogger')
+			buildArgs.add('--trace-object-instantiation=com.ctc.wstx.stax.WstxInputFactory,com.sun.xml.ws.policy.privateutil.PolicyLogger')
+			buildArgs.add('--initialize-at-build-time=com.sun.xml.ws.policy.privateutil.PolicyLogger')
+			buildArgs.add('--initialize-at-build-time=com.ctc.wstx.stax.WstxInputFactory')
+			buildArgs.add('--initialize-at-build-time=com.ctc.wstx.util.DefaultXmlSymbolTable')
+			buildArgs.add('--initialize-at-build-time=com.ctc.wstx.api.ReaderConfig')
+			buildArgs.add('-H:+ReportExceptionStackTraces')
+			buildArgs.add('-Ob')
+		}
+	}
+}
+*/
