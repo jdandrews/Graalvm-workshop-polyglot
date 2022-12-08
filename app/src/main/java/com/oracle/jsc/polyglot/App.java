@@ -38,7 +38,7 @@ public class App {
     private void dbHello() throws ClassNotFoundException, SQLException, IOException {
         log.debug("dbHello()");
         // delete the database named 'test' in the user home directory
-        Files.deleteIfExists(Path.of("~", "test"));
+        Files.deleteIfExists(Path.of(System.getProperty("user.home"), "test.mv.db"));
 
         Class.forName("org.h2.Driver");
         Connection conn = DriverManager.getConnection("jdbc:h2:~/test");
