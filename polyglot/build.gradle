@@ -26,7 +26,7 @@ tasks.named('test') {
 
 graalvmNative {
     metadataRepository {
-        enabled = false
+        enabled = true
     }
 
 	binaries {
@@ -39,6 +39,8 @@ graalvmNative {
 			// buildArgs.add('--initialize-at-run-time=<...package...>')
 			// buildArgs.add('--trace-object-instantiation=<...classname...>')
 			// buildArgs.add('-H:+ReportExceptionStackTraces')
+			buildArgs.add("--language:python")
+			buildArgs.add("--language:R")
 			buildArgs.add('-Ob')
 		}
 	}
