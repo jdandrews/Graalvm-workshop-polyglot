@@ -88,17 +88,17 @@ public class App {
 
         // context provides the execution environment for a guest language.
         try (Context context = Context.newBuilder().allowAllAccess(true).build()) {
-            /*
             Source rSource = Source.newBuilder("R", new FileReader(rCode), rCode).build();
             context.eval(rSource);
-            */
 
             Source pythonSource = Source.newBuilder("python", new FileReader(pythonCode), pythonCode).build();
             context.eval(pythonSource);
-            Value pythonFunction = context.getPolyglotBindings().getMember("transform_message");
+            Value graphData = context.getPolyglotBindings().getMember("transform_message");
 
-            System.out.println(pythonFunction.execute("1234"));
+	    // call the python function, which graphs the input by calling R, with a fibonacci series
+            System.out.println(graphData.execute("-21 -13 -8 5 -3 2 -1 1 0 1 1 2 3 5 8 13 21"));
         }
         
     }
 }
+
