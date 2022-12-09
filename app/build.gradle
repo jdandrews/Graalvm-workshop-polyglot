@@ -17,7 +17,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.oracle.jsc.polyglot.App'
+    mainClass = 'com.jrandrews.jsc.polyglot.App'
 }
 
 tasks.named('test') {
