@@ -94,7 +94,10 @@ public class App {
 //            context.getBindings("python").putMember("msg", );
 
             Source pythonSource = Source.newBuilder("python", new FileReader(pythonCode), pythonCode).build();
-            context.eval(pythonSource);
+	    context.eval("python", pythonSource);
+	    Value pythonFunction = context.getBindings("python").getMember("transform_message");
+//            System.out.println(context.eval(pythonSource));
+            System.out.println(pythonFunction.execute("1234"));
         }
         
     }
