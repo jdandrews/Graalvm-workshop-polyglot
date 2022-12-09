@@ -73,7 +73,7 @@ public class App {
 
     private void pythonHello() throws FileNotFoundException, IOException {
         log.debug("pythonHello()");
-        String pythonSource = "../scripts/polyglot.py";
+        String pythonSource = "scripts/polyglot.py";
         Source source = Source.newBuilder("python", new FileReader(pythonSource), pythonSource).build();
         try (Context context = Context.create()) {  // context provides the execution environment for a guest language.
             context.eval(source);
@@ -83,8 +83,8 @@ public class App {
     private void rFromPythonGraph() throws FileNotFoundException, IOException {
         log.debug("calling R from Python from Java");
 
-        String rCode = "../scripts/polyglot.R";
-        String pythonCode = "../scripts/callGraph.py";
+        String rCode = "scripts/polyglot.R";
+        String pythonCode = "scripts/callGraph.py";
 
         // context provides the execution environment for a guest language.
         try (Context context = Context.newBuilder().allowAllAccess(true).build()) {

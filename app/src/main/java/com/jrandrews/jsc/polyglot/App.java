@@ -3,8 +3,6 @@
  */
 package com.jrandrews.jsc.polyglot;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,9 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +26,6 @@ public class App {
         try {
             app.dbHello();
         } catch (ClassNotFoundException | SQLException | IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            app.pythonHello();
-            app.rFromPythonGraph();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -69,40 +57,5 @@ public class App {
         }
         stat.close();
         conn.close();
-    }
-
-    private void pythonHello() throws FileNotFoundException, IOException {
-        log.debug("pythonHello()");
-        String pythonSource = "../scripts/polyglot.py";
-        Source source = Source.newBuilder("python", new FileReader(pythonSource), pythonSource).build();
-        try (Context context = Context.create()) {  // context provides the execution environment for a guest language.
-            context.eval(source);
-        }
-    }
-
-    private void rFromPythonGraph() throws FileNotFoundException, IOException {
-        log.debug("calling R from Python from Java");
-
-        String rCode = "../scripts/polyglot.R";
-        String pythonCode = "../scripts/callGraph.py";
-
-        // context provides the execution environment for a guest language.
-        try (Context context = Context.newBuilder().allowAllAccess(true).build()) {
-            // load the R function into the context
-            Source rSource = Source.newBuilder("R", new FileReader(rCode), rCode).build();
-            context.eval(rSource);
-
-            // load the Python function into the context. This function queries the context for the R function and links it.
-            Source pythonSource = Source.newBuilder("python", new FileReader(pythonCode), pythonCode).build();
-            context.eval(pythonSource);
-
-            // graphData is a Java object referencing the Python "transform_message" function we exported.
-            Value graphData = context.getPolyglotBindings().getMember("transform_message");
-
-            // call the Python function, which graphs the input by calling R, with a Fibonacci series
-            // note that we can pass any kind of Java data through the interface; R can easily parse this string, though.
-            graphData.execute("-21 -13 -8 5 -3 2 -1 1 0 1 1 2 3 5 8 13 21");
-        }
-
     }
 }
