@@ -40,7 +40,7 @@ graalvmNative {
 			// buildArgs.add('--trace-object-instantiation=<...classname...>')
 			// buildArgs.add('-H:+ReportExceptionStackTraces')
 			buildArgs.add("--language:python")
-			buildArgs.add("--language:R")
+			// buildArgs.add("--language:R")
 			buildArgs.add('-Ob')
 		}
 	}
