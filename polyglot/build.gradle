@@ -1,0 +1,45 @@
+plugins {
+    id 'application'
+    id 'org.graalvm.buildtools.native' // see gradle.properties for version.
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.slf4j', name:'slf4j-api', version: '2.0.5'
+    implementation group: 'ch.qos.logback', name:'logback-classic', version: '1.4.1'
+    implementation group: 'ch.qos.logback', name:'logback-core', version: '1.4.1'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.210'
+
+    testImplementation 'org.testng:testng:7.4.0'
+}
+
+application {
+    mainClass = 'com.jrandrews.jsc.polyglot.App'
+}
+
+tasks.named('test') {
+    useTestNG()
+}
+
+graalvmNative {
+    metadataRepository {
+        enabled = false
+    }
+
+	binaries {
+		main {
+			// Main options
+			// debug = true // Determines if debug info should be generated, defaults to false
+			// verbose = true // Add verbose output, defaults to false
+			// fallback = false // Sets the fallback mode of native-image, defaults to false
+			// buildArgs.add("--initialize-at-build-time=<...classname...>")
+			// buildArgs.add('--initialize-at-run-time=<...package...>')
+			// buildArgs.add('--trace-object-instantiation=<...classname...>')
+			// buildArgs.add('-H:+ReportExceptionStackTraces')
+			buildArgs.add('-Ob')
+		}
+	}
+}
