@@ -16,6 +16,7 @@ import java.sql.Statement;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,20 +84,19 @@ public class App {
         log.debug("calling R from Python from Java");
 
         String rCode = "../scripts/polyglot.R";
-
         String pythonCode = "../scripts/callGraph.py";
 
         // context provides the execution environment for a guest language.
         try (Context context = Context.newBuilder().allowAllAccess(true).build()) {
+            /*
             Source rSource = Source.newBuilder("R", new FileReader(rCode), rCode).build();
             context.eval(rSource);
-
-//            context.getBindings("python").putMember("msg", );
+            */
 
             Source pythonSource = Source.newBuilder("python", new FileReader(pythonCode), pythonCode).build();
-	    context.eval("python", pythonSource);
-	    Value pythonFunction = context.getBindings("python").getMember("transform_message");
-//            System.out.println(context.eval(pythonSource));
+            context.eval(pythonSource);
+            Value pythonFunction = context.getPolyglotBindings().getMember("transform_message");
+
             System.out.println(pythonFunction.execute("1234"));
         }
         
