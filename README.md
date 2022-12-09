@@ -36,4 +36,8 @@ Update build.gradle; set metadataRepository = true
 This changes the included project from “app” to “polyglot”.
 
     ./gradlew run
+
+Then build the native image and run it:
+
+    ./gradlew clean run --args="-agentlib:native-image-agent” to get a set of configuration files. ‘find . –name ““.json”’ to see the files.
     ./gradlew nativeRun
