@@ -28,6 +28,7 @@ Class.forName(...), then use it to perform some basic database operations.  Insp
 have configured the GraalVM plugin to compile the code.
 
 Run the app:
+
     ./gradlew run
 
 Note that a database file is created in the logged in user's home directory.  Now build and run a native image:
@@ -50,17 +51,27 @@ Now build and run again:
 
 ## Polyglot
 
-Install runtimes:
+GraalVM can run multiple languages at once.
+
+First, install runtimes:
 
     gu available        # to see what's available
     gu install python
     gu install r
 
+
+Now change the included project from “app” to “polyglot”:
+
     cp settings.polyglot settings.gradle
 
-This changes the included project from “app” to “polyglot”. Now build and run using the JIT compiler:
-
+ Inspect the code in the polyglot project. App.java loads a Python script and an R script into an execution Context, then executes the Python
+ script. That script finds the R script in the context, and executes that. The results are printed to the screen.
+ 
+ Now build and run using the JIT compiler:
+ 
     ./gradlew run
+
+Isn't that cool?
 
 Then build the native image and run it. The R native image build is experimental so for now, comment out the R
 code by editing the App.java source code, and commenting out the line that says "app.rFromPythonGraph();". Then:
