@@ -1,25 +1,48 @@
 # Metadata repository and polyglot programming demo
 
-This really only works on unix systems as of 08 dec 2022
+## Preparation
+This really only works on Linux systems as of 08 Dec 2022
 
-Install Oracle GraalVM Enterprise Edition.
+Start with a recent Linux distribution; this is tested on Linux 8.9 and 9.x.
+* Install Oracle GraalVM Enterprise Edition v 22.3 or later.
+* Install gradle
+* Clone this repository.
 
 ## Metadata
 
-To run the app:
+GraalVM compilation depends on the idea that the compiler can trace the main entry point and identify all the classes required
+to execute the code. It works pretty well unless the design firewalls some part of the code, making it impossible for the 
+compiler to determine what classes are air-gapped. There are 2 strategies for dealing with this:
+
+1. run the code once using the JIT compiler and instrument the code. The instrumentation can tell what classes are loaded and 
+   mark them for inclusion.
+2. use similar data, pre-built from standard distributions.
+
+Oracle maintains a metadata repository, allowing users to post data needed to compile many standard open source packages. One such
+package is the H2 in-memory database. Since the JDBC driver is instantiated with Class.forName(...), the compiler can't trace down
+into H2's client to determine what needs to be included in the final executable. With the Metadata repository, that information can
+be looked up at compile time, and a complete executable generated.
+
+Inspect the code:  In src/main/java/com/jrandrews/jsc/polyglot/App.java, you can see that we instantiate an H2 JDBC driver using 
+Class.forName(...), then use it to perform some basic database operations.  Inspecting the build.gradle file, you can see how we 
+have configured the GraalVM plugin to compile the code.
+
+Run the app:
     ./gradlew run
+
+Note that a database file is created in the logged in user's home directory.  Now build and run a native image:
 
     ./gradlew nativeRun
 
-to show that the JDBC driver doesn't work.
-
-Note class forName to get the JDBC driver; there’s no real way for the compiler to include the H2 stuff,
-because there’s no direct class behavior. 
+The build succeeds, but the resulting application throws a null pointer exception, because the JDBC client code is not included
+in the executable.
 
 Navigate to (GraalVM Reachability Matrix)[https://github.com/oracle/graalvm-reachability-metadata];
 drill in to H2 and note the version supported.
 
 Update build.gradle; set metadataRepository = true
+
+Now build and run again:
 
     ./gradlew nativeRun
 
