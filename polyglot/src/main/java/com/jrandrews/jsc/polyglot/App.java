@@ -16,7 +16,6 @@ import java.sql.Statement;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +35,7 @@ public class App {
 
         try {
             app.pythonHello();
-            app.rFromPythonGraph();
+            app.pythonGraph();
         } catch (IOException e) {
             e.printStackTrace();
         }
