@@ -81,7 +81,7 @@ public class App {
 
     private void pythonGraph() throws FileNotFoundException, IOException {
         log.debug("pythonGraph()");
-        String pythonSource = "scripts/deoGraph.py";
+        String pythonSource = "scripts/demoGraph.py";
         Source source = Source.newBuilder("python", new FileReader(pythonSource), pythonSource).build();
         try (Context context = Context.create()) {  // context provides the execution environment for a guest language.
             context.eval(source);
